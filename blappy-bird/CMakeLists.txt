@@ -3,6 +3,7 @@
 #
 
 find_package(SDL3 REQUIRED)
+find_package(SDL3_image REQUIRED)
 
 # Add source to this project's executable.
 add_executable (blappy-bird "blappy-bird.cpp" "blappy-bird.h")
@@ -12,4 +13,4 @@ if (CMAKE_VERSION VERSION_GREATER 3.12)
 endif()
 
 # TODO: Add tests and install targets if needed.
-target_link_libraries(blappy-bird PRIVATE SDL3::SDL3)
+target_link_libraries(blappy-bird PRIVATE SDL3::SDL3 SDL3_image::SDL3_image)

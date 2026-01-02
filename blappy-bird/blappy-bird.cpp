@@ -3,6 +3,9 @@
 
 #include "blappy-bird.h"
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3_image/SDL_image.h>
+#include <string>
 
 using namespace std;
 
@@ -16,7 +19,7 @@ struct SDLState {
 void initialize(SDLState& state);
 void cleanup(SDLState& state);
 
-int main()
+int main(int argc, char *argv[])
 {
 	cout << "Hello CMake." << endl;
 
@@ -38,7 +41,25 @@ int main()
 					break;
 			}
 		}
+
+		// Set drawing commands and clear renderer
+		SDL_SetRenderDrawColor(state.renderer, 0, 30, 0, 255);
+		SDL_RenderClear(state.renderer);
+
+		// load bird1.png texture
+		const std::string& filepath = "data/blappy/bird1.png";
+		SDL_Texture* blappy = IMG_LoadTexture(state.renderer, filepath.c_str());
+		SDL_SetTextureScaleMode(blappy, SDL_SCALEMODE_NEAREST);
+
+		SDL_RenderTexture(state.renderer, blappy, NULL, NULL);
+		
+		// swap buffers and present new image
+		SDL_RenderPresent(state.renderer);
+
 	}
+
+	// remember to destroy texture when done
+	/* SDL_DestroyTexture(blappy); - can't right now */
 
 	cleanup(state);
 	SDL_Quit();
