@@ -6,6 +6,7 @@
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -14,6 +15,44 @@ struct SDLState {
 	SDL_Renderer* renderer;
 	int width = 1280;
 	int height = 720;
+};
+
+struct Resources {
+	// player animations
+	const int ANIM_PLAYER_IDLE = 0;
+	const int ANIM_PLAYER_JUMP_START = 1;
+	const int ANIM_PLAYER_END_START = 2;
+	std::vector<int> playerAnims;
+
+	// all textures
+	std::vector<SDL_Texture*> textures;
+	SDL_Texture *playerIdle, *playerStartJump, *playerEndJump;
+
+	// load a single texture, set scaling, and push into textures vector
+	SDL_Texture* loadTexture(SDL_Renderer* renderer, const std::string& filepath)
+	{
+		SDL_Texture* tex = IMG_LoadTexture(renderer, filepath.c_str());
+		SDL_SetTextureScaleMode(tex, SDL_SCALEMODE_NEAREST);
+		textures.push_back(tex);
+		return tex;
+	};
+
+	// load all textures
+	void load(SDLState& state)
+	{
+		playerIdle = loadTexture(state.renderer, "data/blappy/blappyIdle.png");
+		playerStartJump = loadTexture(state.renderer, "data/blappy/blappyStartJump.png");
+		playerEndJump = loadTexture(state.renderer, "data/blappy/blappyEndJump.png");
+	};
+
+	// unload all textures
+	void unload(SDLState& state)
+	{
+		for (SDL_Texture* tex : textures)
+		{
+			SDL_DestroyTexture(tex);
+		}
+	};
 };
 
 void initialize(SDLState& state);
@@ -26,6 +65,10 @@ int main(int argc, char *argv[])
 	// initialize SDL video, create window
 	SDLState state;
 	initialize(state);
+
+	// initialize game resources
+	Resources res;
+	res.load(state);
 
 	// game loop
 	bool gameRunning = true;
@@ -47,11 +90,15 @@ int main(int argc, char *argv[])
 		SDL_RenderClear(state.renderer);
 
 		// load bird1.png texture
-		const std::string& filepath = "data/blappy/bird1.png";
+		/*const std::string& filepath = "data/blappy/blappyStartJump.png";
 		SDL_Texture* blappy = IMG_LoadTexture(state.renderer, filepath.c_str());
 		SDL_SetTextureScaleMode(blappy, SDL_SCALEMODE_NEAREST);
 
-		SDL_RenderTexture(state.renderer, blappy, NULL, NULL);
+		SDL_RenderTexture(state.renderer, blappy, NULL, NULL);*/
+
+		// load player textures
+		SDL_RenderTexture(state.renderer, res.textures[0], NULL, NULL);
+
 		
 		// swap buffers and present new image
 		SDL_RenderPresent(state.renderer);
