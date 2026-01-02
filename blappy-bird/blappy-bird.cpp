@@ -11,7 +11,24 @@ int main()
 {
 	cout << "Hello CMake." << endl;
 
+	// initialize SDL video, create window
 	initialize();
+
+	// game loop
+	bool gameRunning = true;
+	while (gameRunning)
+	{
+		SDL_Event event;
+		while (SDL_PollEvent(&event))
+		{
+			switch (event.type)
+			{
+				case SDL_EVENT_QUIT:
+					gameRunning = false;
+					break;
+			}
+		}
+	}
 
 	SDL_Quit();
 	return 0;

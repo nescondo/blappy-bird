@@ -1,5 +1,0 @@
-C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug/CMakeFiles/edit_cache.dir
-C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug/blappy-bird/CMakeFiles/blappy-bird.dir
-C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug/blappy-bird/CMakeFiles/edit_cache.dir
-C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug/blappy-bird/CMakeFiles/rebuild_cache.dir
