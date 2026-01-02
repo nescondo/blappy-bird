@@ -14,6 +14,7 @@ struct SDLState {
 };
 
 void initialize(SDLState& state);
+void cleanup(SDLState& state);
 
 int main()
 {
@@ -39,8 +40,7 @@ int main()
 		}
 	}
 
-	SDL_DestroyRenderer(state.renderer);
-	SDL_DestroyWindow(state.window);
+	cleanup(state);
 	SDL_Quit();
 	return 0;
 }
@@ -67,4 +67,11 @@ void initialize(SDLState& state)
 	SDL_Renderer* renderer;
 	renderer = SDL_CreateRenderer(window, NULL);
 	state.renderer = renderer;
+}
+
+void cleanup(SDLState& state)
+{
+	// cleanup allocated memory
+	SDL_DestroyRenderer(state.renderer);
+	SDL_DestroyWindow(state.window);
 }
