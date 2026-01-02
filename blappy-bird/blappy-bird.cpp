@@ -59,7 +59,7 @@ void initialize(SDLState& state)
 		"Blappy Bird",
 		state.width,
 		state.height,
-		SDL_WINDOW_OPENGL
+		SDL_WINDOW_RESIZABLE
 	);
 	state.window = window;
 
