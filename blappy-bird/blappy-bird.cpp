@@ -6,13 +6,22 @@
 
 using namespace std;
 
-void initialize();
+struct SDLState {
+	SDL_Window* window;
+	SDL_Renderer* renderer;
+	int width = 1280;
+	int height = 720;
+};
+
+void initialize(SDLState& state);
+
 int main()
 {
 	cout << "Hello CMake." << endl;
 
 	// initialize SDL video, create window
-	initialize();
+	SDLState state;
+	initialize(state);
 
 	// game loop
 	bool gameRunning = true;
@@ -30,11 +39,13 @@ int main()
 		}
 	}
 
+	SDL_DestroyRenderer(state.renderer);
+	SDL_DestroyWindow(state.window);
 	SDL_Quit();
 	return 0;
 }
 
-void initialize()
+void initialize(SDLState& state)
 {
 	// initialize SDL w/ video
 	if (!SDL_Init(SDL_INIT_VIDEO))
@@ -46,8 +57,14 @@ void initialize()
 	SDL_Window* window;
 	window = SDL_CreateWindow(
 		"Blappy Bird",
-		640,
-		480,
+		state.width,
+		state.height,
 		SDL_WINDOW_OPENGL
 	);
+	state.window = window;
+
+	// create renderer
+	SDL_Renderer* renderer;
+	renderer = SDL_CreateRenderer(window, NULL);
+	state.renderer = renderer;
 }
