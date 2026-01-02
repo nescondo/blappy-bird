@@ -8,12 +8,15 @@
       "out\\build\\x86-debug",
       "out\\install\\x86-debug",
       "out\\build\\x86-release",
-      "out\\install\\x86-release"
+      "out\\install\\x86-release",
+      "out\\build\\x64-debug-user",
+      "out\\install\\x64-debug-user"
     ]
   },
   "ExpandedNodes": [
     "",
     "\\blappy-bird"
   ],
+  "SelectedNode": "\\blappy-bird\\blappy-bird.cpp",
   "PreviewInSolutionExplorer": false
 }

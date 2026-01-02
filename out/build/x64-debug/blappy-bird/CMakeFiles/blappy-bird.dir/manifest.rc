@@ -1,0 +1,2 @@
+#pragma code_page(65001)
+1 /* CREATEPROCESS_MANIFEST_RESOURCE_ID */ 24 /* RT_MANIFEST */ "C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug/blappy-bird/CMakeFiles/blappy-bird.dir/embed.manifest"

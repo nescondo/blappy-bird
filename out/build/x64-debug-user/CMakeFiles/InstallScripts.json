@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug-user/cmake_install.cmake",
+		"C:/Users/nesco/source/repos/blappy-bird/out/build/x64-debug-user/blappy-bird/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
