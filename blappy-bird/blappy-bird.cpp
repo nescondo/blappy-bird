@@ -7,6 +7,8 @@
 #include <SDL3_image/SDL_image.h>
 #include <string>
 #include <vector>
+#include "gameobject.h"
+#include <glm/glm.hpp>
 
 using namespace std;
 
@@ -15,6 +17,12 @@ struct SDLState {
 	SDL_Renderer* renderer;
 	int width = 1280;
 	int height = 720;
+	const bool* keys; // holds keyboard state
+
+	// default constructor initializes 'keys' member var. w/ snapshot of keyboard state
+	SDLState() : keys(SDL_GetKeyboardState(nullptr))
+	{
+	}
 };
 
 struct Resources {
@@ -57,6 +65,7 @@ struct Resources {
 
 void initialize(SDLState& state);
 void cleanup(SDLState& state);
+void handleKeyInput(SDLState& state, GameObject& obj, SDL_Keycode key, bool keyDown);
 
 int main(int argc, char *argv[])
 {
@@ -70,6 +79,14 @@ int main(int argc, char *argv[])
 	Resources res;
 	res.load(state);
 
+	// create player object
+	GameObject player;
+	player.position = glm::vec2(
+		0, // horizontal position
+		0); // vertical position
+	player.texture = res.textures[0];
+	player.acceleration = glm::vec2(10, 0);
+
 	// game loop
 	bool gameRunning = true;
 	while (gameRunning)
@@ -80,8 +97,15 @@ int main(int argc, char *argv[])
 			switch (event.type)
 			{
 				case SDL_EVENT_QUIT:
+				{
 					gameRunning = false;
 					break;
+				}
+				case SDL_EVENT_KEY_DOWN:
+				{
+					handleKeyInput(state, player, event.key.key, true);
+					break;
+				}
 			}
 		}
 
@@ -100,18 +124,18 @@ int main(int argc, char *argv[])
 		SDL_FRect src{
 			.x = 0,
 			.y = 0,
-			.w = 32,
-			.h = 32
+			.w = static_cast<float>(player.texture->w),
+			.h = static_cast<float>(player.texture->h)
 		};
 
 		SDL_FRect dst{
-			.x = 32,
-			.y = 32,
-			.w = 32,
-			.h = 32
+			.x = 200,
+			.y = 300 + player.velocity.y,
+			.w = static_cast<float>(player.texture->w),
+			.h = static_cast<float>(player.texture->h)
 		};
 
-		SDL_RenderTexture(state.renderer, res.textures[0], &src, &dst);
+		SDL_RenderTexture(state.renderer, player.texture, &src, &dst);
 
 		
 		// swap buffers and present new image
@@ -156,4 +180,17 @@ void cleanup(SDLState& state)
 	// cleanup allocated memory
 	SDL_DestroyRenderer(state.renderer);
 	SDL_DestroyWindow(state.window);
+}
+
+void handleKeyInput(SDLState& state, GameObject& obj, SDL_Keycode key, bool keyDown)
+{
+	const float JUMP_FORCE = -10.0f;
+	if (keyDown && key == SDLK_SPACE)
+	{
+		// TODO: this is for each frame, use delta time
+		obj.velocity += obj.acceleration;
+		obj.velocity.y += JUMP_FORCE;
+		obj.position.y += obj.velocity.y;
+		SDL_Log("space pressed");
+	}
 }
